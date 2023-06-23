@@ -8,6 +8,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
 import { Image } from '../models/image';
 import { environment } from 'src/environments/environment.development';
+import { Utilisateur } from 'src/app/authentification/models/utilisateurs';
 
 
 @Component({
@@ -23,8 +24,11 @@ voitures!:Observable<Voiture[]>;
 TabVoitures!: Voiture[];
 images!:Observable<Image[]>;
 Tab!:Image[];
+Users!:Observable<Utilisateur[]>;
+TabUsers!:Utilisateur[];
  AnnonceId = +this.id.snapshot.params['id'];
- 
+ /*idUser = environment.id_utilisateur;
+ tels!:number;*/
  
 constructor(private service : AfficheVoitureService,
             private http : HttpClient,
@@ -42,7 +46,7 @@ constructor(private service : AfficheVoitureService,
         console.log(data);
       });
 
-      this.images=this.service.getAllImage();
+      this.images=this.service.getAllImageById(this.AnnonceId);
       this.images.subscribe(reponse =>
         {
           this.Tab = reponse;
@@ -55,9 +59,17 @@ constructor(private service : AfficheVoitureService,
       console.log(res);
     });
 
-  
-  }
+    this.Users = this.service.getAllUsers();
+    this.Users.subscribe(obj =>
+      {
+        this.TabUsers = obj;
+        console.log(obj);
+      })
 
+}
+OnBack(){
+  this.route.navigateByUrl('affiche')
+}
 Delete(){
   this.http.delete(`http://localhost:3000/api/annonce/supprimer/${this.AnnonceId}`);
 }

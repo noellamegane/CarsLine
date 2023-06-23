@@ -4,6 +4,7 @@ import { Observable } from "rxjs";
 import { HttpClient } from "@angular/common/http";
 import { Voiture } from "../models/voiture";
 import { Image } from "../models/image";
+import { Utilisateur } from "src/app/authentification/models/utilisateurs";
 
 @Injectable()
 export class AfficheVoitureService{
@@ -23,10 +24,13 @@ export class AfficheVoitureService{
     {
        return this.http.get<Annonce>(`http://localhost:3000/api/annonce/${id}`);
     }
-    getAllImage():Observable<Image[]>
+    getAllImageById(id : number):Observable<Image[]>
     {
-      return this.http.get<Image[]>(`http://localhost:3000/api/imagesuploads`);
+      return this.http.get<Image[]>(`http://localhost:3000/api/findbypk/image_imagesuploads/${id}`);
     }
-    
+    getAllUsers():Observable<Utilisateur[]>
+    {
+      return this.http.get<Utilisateur[]>('http://localhost:3000/api/findall/utilisateur');
+    }
 
 }
